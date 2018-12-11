@@ -130,7 +130,6 @@ class NetuitiveDockerCollector(diamond.collector.Collector):
             now = datetime.now()
             uptime = now - start_date
             self.publish(name + '.uptime.seconds', int(uptime.total_seconds()))
-            self.log.info('uptime' + name + '.uptime.seconds' + str(int(uptime.total_seconds())))
 
 
         cc = docker.Client(
