@@ -113,7 +113,7 @@ class NetuitiveDockerCollector(diamond.collector.Collector):
             # memory metrics
             self.memory = self.flatten_dict(metrics['memory_stats'])
 
-            self.publish(name + '.netuitive.docker.memory.container_memory_percent', 100.0 * self.memory['usage'] / self.memory['limit'])
+            self.publish(name + '.memory.container_memory_percent', 100.0 * self.memory['usage'] / self.memory['limit'])
 
             # cpu metrics
             self.cpu = self.flatten_dict(metrics['cpu_stats'])
@@ -123,13 +123,14 @@ class NetuitiveDockerCollector(diamond.collector.Collector):
 
             # Derivatives take one cycle to warm up
             if total != 0:
-                self.publish(name + '.netuitive.docker.cpu.container_cpu_percent', 100.0 * usage / total)
+                self.publish(name + '.cpu.container_cpu_percent', 100.0 * usage / total)
 
         def collect_uptime(name, started_at):
             start_date = datetime.strptime(str(started_at).split(".")[0], "%Y-%m-%dT%H:%M:%S")
             now = datetime.now()
             uptime = now - start_date
             self.publish(name + '.uptime.seconds', int(uptime.total_seconds()))
+            self.log.info('uptime' + name + '.uptime.seconds' + str(int(uptime.total_seconds())))
 
 
         cc = docker.Client(
